@@ -108,3 +108,24 @@ enum eSensor {
 - `Changelog.md` — Version history
 - `Dependencies.md` — Third-party library details
 - `Calibration_Tutorial.pdf` — Camera+IMU calibration guide
+
+---
+
+## Architecture Documentation Summary
+
+`docs/ARCHITECTURE.md` covers every subsystem in depth:
+
+| Section | Content |
+|---------|---------|
+| Thread Architecture | 3-thread pipeline diagram and inter-thread sync mechanisms |
+| System Init | Startup sequence, public API, localization mode |
+| Tracking (Frontend) | State machine, per-frame pipeline, keyframe decision rules, IMU tracking |
+| LocalMapping (Midend) | Map point creation/culling, local BA, 3-stage IMU init, KF culling |
+| LoopClosing (Backend) | DBoW2 place recognition, Sim3 verification, loop correction, map merge |
+| Optimizer | Catalog of 12 optimization problems, all custom g2o vertex/edge types |
+| IMU Preintegration | Discrete integration math, covariance propagation, bias-correction Jacobians |
+| Camera Models | Pinhole (4-param) and KannalaBrandt8 fisheye (8-param) with Jacobians |
+| Core Data Structures | Frame, KeyFrame, MapPoint, Atlas, KeyFrameDatabase |
+| Serialization | Boost pointer-to-ID strategy for map save/load |
+| Sensor Config Matrix | Capability comparison across all 6 sensor modes |
+| Data Flow Diagram | End-to-end system block diagram |

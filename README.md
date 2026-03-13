@@ -30,6 +30,21 @@ alt="ORB-SLAM3" width="240" height="180" border="10" /></a>
 
 [DBoW2 Place Recognition] Dorian Gálvez-López and Juan D. Tardós. **Bags of Binary Words for Fast Place Recognition in Image Sequences**. *IEEE Transactions on Robotics,* vol. 28, no. 5, pp. 1188-1197, 2012. **[PDF](http://doriangalvez.com/php/dl.php?dlp=GalvezTRO12.pdf)**
 
+# Architecture Documentation
+
+For a deep-dive into the algorithmic design of ORB-SLAM3, see [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+It covers:
+- **Thread architecture**: 3-thread pipeline (Tracking → LocalMapping → LoopClosing) with inter-thread synchronization
+- **Tracking frontend**: pose estimation state machine, motion model, IMU preintegration, keyframe decision logic
+- **LocalMapping midend**: map point creation/culling, local bundle adjustment, 3-stage IMU initialization (VIBA1/VIBA2/ScaleRefinement)
+- **LoopClosing backend**: DBoW2 place recognition, Sim3 geometric verification with temporal consistency, loop correction and multi-map merging
+- **Optimizer**: 12 optimization problems (PoseOptimization, LocalBA, LocalInertialBA, FullInertialBA, EssentialGraph, Sim3, …), custom g2o vertex/edge types, IMU preintegration residuals
+- **IMU preintegration math**: discrete integration, 15×15 covariance propagation, bias-correction Jacobians, SO(3) manifold operations
+- **Camera model subsystem**: Pinhole (4-param) and KannalaBrandt8 fisheye (8-param) with analytic Jacobians
+- **Core data structures**: Frame, KeyFrame, MapPoint, Atlas, KeyFrameDatabase with Boost serialization
+- **End-to-end data flow diagram** and sensor capability matrix
+
 # 1. License
 
 ORB-SLAM3 is released under [GPLv3 license](https://github.com/UZ-SLAMLab/ORB_SLAM3/LICENSE). For a list of all code/library dependencies (and associated licenses), please see [Dependencies.md](https://github.com/UZ-SLAMLab/ORB_SLAM3/blob/master/Dependencies.md).
